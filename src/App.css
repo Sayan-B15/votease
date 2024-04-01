@@ -1,38 +1,123 @@
+body {
+  background-image: url(bg.jpg);
+  color: #333;
+  font-family: Arial, sans-serif;
+}
+
 .App {
+  max-width: 600px;
+  margin: 50px auto;
+  padding: 20px;
+  border-radius: 10px;
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+  color: #ff624e;
+  font-family: arial, sans-serif;
+  font-size: 45px;
+  font-weight: bold;
+  margin-top: 0px;
+  margin-bottom: 1px;
   text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
   }
-}
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.candidate {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  justify-content: space-between;
+  margin-bottom: 15px;
 }
 
-.App-link {
-  color: #61dafb;
+label {
+  flex: 1;
+  display: block;
+  font-size: 18px;
+  margin-bottom: 8px;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+input[type="number"],
+input[type="text"] {
+  width: calc(100% - 24px);
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+.voteButton{
+  padding: 12px 24px;
+  cursor: pointer;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+
+.showResultButton {
+  padding: 12px 24px;
+  cursor: pointer;
+  background-color: #ffffff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+
+.voteButton:hover{
+  background-color: #ff0808;
+}
+
+.showResultButton:hover {
+  background-color: #59ff00;
+}
+
+ul {
+  padding: 0;
+  margin: 0;
+}
+
+li {
+  margin-bottom: 10px;
+}
+
+h2 {
+  margin-top: 20px;
+  font-size: 24px;
+  color: #333;
+}
+
+/* Animations */
+.result-enter {
+  opacity: 0;
+}
+
+.result-enter-active {
+  opacity: 1;
+  transition: opacity 500ms;
+}
+
+.result-exit {
+  opacity: 1;
+}
+
+.result-exit-active {
+  opacity: 0;
+  transition: opacity 500ms;
+}
+
+/* Dark mode styles */
+input[type="number"],
+input[type="text"],
+button {
+  background-color: #f0f2f5;
+  color: #333;
+}
+
+button:hover {
+  background-color: #ccc;
 }
