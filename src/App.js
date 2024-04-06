@@ -2,16 +2,28 @@ import React, { useState } from 'react';
 import './App.css';
 
 function App() {
-  const [numCandidates, setNumCandidates] = useState(0);
+  const [numCandidates, setNumCandidates] = useState('');
   const [candidates, setCandidates] = useState([]);
-  const [votes, setVotes] = useState(Array(numCandidates).fill(0));
+  const [votes, setVotes] = useState([]);
   const [showResults, setShowResults] = useState(false);
 
   const handleNumCandidatesChange = (event) => {
-    const num = parseInt(event.target.value);
-    setNumCandidates(num);
-    setCandidates(Array(num).fill(''));
-    setVotes(Array(num).fill(0));
+    const input = event.target.value.trim(); // Trim whitespace
+    setNumCandidates(input); // Store input as string
+    if (input === '' || (input.length > 0 && !isNaN(input) && parseInt(input) >= 0)) {
+      // Check if input is empty or a valid non-negative integer
+      const num = parseInt(input);
+      setNumCandidates(num.toString()); // Convert back to string to maintain user input
+      if (num === 0) {
+        // Reset candidates and votes if the number of candidates is 0
+        setCandidates([]);
+        setVotes([]);
+      } else {
+        // Update candidates and votes based on the entered number
+        setCandidates(Array(num).fill(''));
+        setVotes(Array(num).fill(0));
+      }
+    }
   };
 
   const handleCandidateNameChange = (index, event) => {
@@ -45,14 +57,13 @@ function App() {
   return (
     <div className="App">
       <h1>Elect Ease</h1>
-      {!showResults && (
+      {!showResults ? (
         <>
-          {!numCandidates ? (
-            <label>
-              Enter number of candidates:
-              <input type="number" value={numCandidates} onChange={handleNumCandidatesChange} />
-            </label>
-          ) : (
+          <label>
+            Enter number of candidates:
+            <input type="text" value={numCandidates} onChange={handleNumCandidatesChange} />
+          </label>
+          {numCandidates !== '' && parseInt(numCandidates) > 0 && (
             <>
               {candidates.map((candidate, index) => (
                 <div key={index} className="candidate">
@@ -68,8 +79,7 @@ function App() {
             </>
           )}
         </>
-      )}
-      {showResults && (
+      ) : (
         <div>
           <h2>Results:</h2>
           <ul>
