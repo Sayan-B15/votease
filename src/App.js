@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './App.css';
+import coinSound from './coin.mp3'; // Import the audio file
 
 function App() {
   const [numCandidates, setNumCandidates] = useState('');
@@ -8,18 +9,15 @@ function App() {
   const [showResults, setShowResults] = useState(false);
 
   const handleNumCandidatesChange = (event) => {
-    const input = event.target.value.trim(); // Trim whitespace
-    setNumCandidates(input); // Store input as string
+    const input = event.target.value.trim();
+    setNumCandidates(input);
     if (input === '' || (input.length > 0 && !isNaN(input) && parseInt(input) >= 0)) {
-      // Check if input is empty or a valid non-negative integer
       const num = parseInt(input);
-      setNumCandidates(num.toString()); // Convert back to string to maintain user input
+      setNumCandidates(num.toString());
       if (num === 0) {
-        // Reset candidates and votes if the number of candidates is 0
         setCandidates([]);
         setVotes([]);
       } else {
-        // Update candidates and votes based on the entered number
         setCandidates(Array(num).fill(''));
         setVotes(Array(num).fill(0));
       }
@@ -33,7 +31,7 @@ function App() {
   };
 
   const handleVote = (index) => {
-    const audio = new Audio('https://soundbible.com/grab.php?id=1242&type=wav');
+    const audio = new Audio(coinSound); // Use imported audio file
     audio.play();
     const newVotes = [...votes];
     newVotes[index] += 1;
