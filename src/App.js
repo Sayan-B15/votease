@@ -1,12 +1,30 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
-import coinSound from './coin.mp3'; // Import the audio file
+import coinSound from './coin.mp3';
 
 function App() {
   const [numCandidates, setNumCandidates] = useState('');
   const [candidates, setCandidates] = useState([]);
   const [votes, setVotes] = useState([]);
   const [showResults, setShowResults] = useState(false);
+  const [votingDisabled, setVotingDisabled] = useState(false);
+  const [timeLeft, setTimeLeft] = useState(0);
+
+  useEffect(() => {
+    if (votingDisabled) {
+      const timeout = setTimeout(() => {
+        setVotingDisabled(false);
+        setTimeLeft(0);
+      }, 10000);
+      const interval = setInterval(() => {
+        setTimeLeft(prevTimeLeft => (prevTimeLeft > 0 ? prevTimeLeft - 1 : 0));
+      }, 1000);
+      return () => {
+        clearTimeout(timeout);
+        clearInterval(interval);
+      };
+    }
+  }, [votingDisabled]);
 
   const handleNumCandidatesChange = (event) => {
     const input = event.target.value.trim();
@@ -31,11 +49,15 @@ function App() {
   };
 
   const handleVote = (index) => {
-    const audio = new Audio(coinSound); // Use imported audio file
-    audio.play();
-    const newVotes = [...votes];
-    newVotes[index] += 1;
-    setVotes(newVotes);
+    if (!votingDisabled) {
+      const audio = new Audio(coinSound);
+      audio.play();
+      const newVotes = [...votes];
+      newVotes[index] += 1;
+      setVotes(newVotes);
+      setVotingDisabled(true);
+      setTimeLeft(10);
+    }
   };
 
   const showResult = () => {
@@ -69,7 +91,7 @@ function App() {
                     Candidate {index + 1}:
                     <input type="text" value={candidate} onChange={(e) => handleCandidateNameChange(index, e)} />
                   </label>
-                  <button onClick={() => handleVote(index)} className="voteButton">Vote</button>
+                  <button onClick={() => handleVote(index)} className="voteButton" disabled={votingDisabled}>Vote</button>
                 </div>
               ))}
               <br />
@@ -89,6 +111,11 @@ function App() {
           </ul>
           <h2>Total Votes: {calculateTotalVotes()}</h2>
           <h2>Winner: {findWinner()}</h2>
+        </div>
+      )}
+      {votingDisabled && (
+        <div>
+          <p>Time left until you can vote again: {timeLeft} seconds</p>
         </div>
       )}
     </div>
